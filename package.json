@@ -1,0 +1,37 @@
+{
+  "name": "casbin-jwt-express",
+  "version": "1.0.0",
+  "description": "An Express authorization middleware that handles stateless JWT Tokens and uses Casbin (https://casbin.org/) to valid access controle rules",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tiagostutz/casbin-jwt-express.git"
+  },
+  "keywords": [
+    "casbin",
+    "security",
+    "access-control",
+    "authorization",
+    "acl",
+    "rbac",
+    "abac",
+    "express",
+    "jwt"
+  ],
+  "author": "Tiago Stutz",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/tiagostutz/casbin-jwt-express/issues"
+  },
+  "homepage": "https://github.com/tiagostutz/casbin-jwt-express#readme",
+  "dependencies": {
+    "casbin": "^1.1.5",
+    "jsonwebtoken": "^8.4.0"
+  },
+  "devDependencies": {
+    "mocha": "^5.2.0"
+  }
+}
