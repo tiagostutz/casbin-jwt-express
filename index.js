@@ -6,6 +6,7 @@ const CasbinJWTAdapter = function(decodedToken) {
   this.decodedToken = decodedToken
   
   this.loadPolicy = function(model) {
+
     if (!this.decodedToken) {
       throw new Error('invalid Token. Token must be provided');
     } 
@@ -13,10 +14,11 @@ const CasbinJWTAdapter = function(decodedToken) {
     const lines = decodedToken.policy.split('\n');
     lines.forEach(n => {
       const line = n.trim();
+
       if (!line) {
         return;
       }
-      
+
       Helper.loadPolicyLine(line, model);
     });
   }
@@ -65,12 +67,10 @@ module.exports = function(modelSource, jwtSecret, ignoredPathsRegex) {
       model = Enforcer.newModel(modelSource, '');
       
     }else{ //object model
-      console.log('____',modelSource.fromText);      
       model = Enforcer.newModel(modelSource.fromText)      
-      console.log('JSON==>>', JSON.stringify(model));
       
     }
-
+    
     jwt.verify(token, jwtSecret, async(err, decoded) => {
       if (err) {
         console.error(err)
@@ -78,8 +78,9 @@ module.exports = function(modelSource, jwtSecret, ignoredPathsRegex) {
       } 
       
       const enforcer = await Enforcer.newEnforcer(model, new CasbinJWTAdapter(decoded))
-      const {originalUrl: path, method} = req
-      const username = token ? decoded.username  : 'anonymous'
+      const { originalUrl: path, method } = req
+      const username = token ? decoded.sub  : 'anonymous'
+      
       if(enforcer.enforce(username, path, method)) {
         next()
       }else{
