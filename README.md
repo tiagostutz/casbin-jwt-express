@@ -1,10 +1,17 @@
 # Casbin JWT Express
 
-casbin-jwt-express is an authorization middleware that uses stateless JWT token for Express.js based on Casbin
+`casbin-jwt-express` is an authorization middleware that uses stateless JWT token to validate ACL rules using [Casbin](https://github.com/casbin/node-casbin)
+
 
 It uses loaded policy rules applied to the enforced user directly from the JWT, so the authorization rules used in the enforcement process are not validated from a server or a file, but from the JWT token itself.
 
 ## Example
+
+First install it:
+
+`npm i --save casbin-jwt-express`
+
+Then use it as a middleware:
 
 ```Javascript
     const jwtSecret = 'my-jwt-secret-used-to-sign-tokens'
@@ -29,13 +36,14 @@ It uses loaded policy rules applied to the enforced user directly from the JWT, 
 
 ## JWT Spec
 
-- The JWT token `payload` must have two attributes:
-    - `sub`:  the "user" (subject) of the rules to be applied. It must be your user identification on the systems. Can be an ID, a e-mail address, a login or whatever you use.
-    - `policy`: has the applied policies to the user having the permissions enforced.
-- The provided `jwtSecret` provided in the initialization of this middleware must be the same as the one used to sign the JWT Token.
+This middleware expects the underlying request to have an `Authorization` HTTP Header in format of `Bearer <JWT_TOKEN>`
 
-## Middleware Parameters
+The JWT token `payload` atteribute must having two attributes:
+- `sub`:  the "user" (subject) of the rules to be applied. It must be your user identification on the systems. Can be an ID, a e-mail address, a login or whatever you use.
+- `policy`: has the policies (ACL) that will be used to enforce the subject (user) authorization
+
+## Middleware Initialization Parameters
 
 - `modelSource`: Can be a filePath for a model file or a JSON Object with the String representation of the model. In case of the JSON model, it must have a `fromText` attribute with the text representation of the model. See below an example.
-- `jwtSecret`: The secret used to sign the token. PS: Currently the middleware does not support certificate-based signature
+- `jwtSecret`: The secret used to sign the token so the middleware can decode the token and inspect its content. PS: Currently the middleware does not support certificate-based signature
 - `ignoredPathsRegex`: if you want some URL patterns to not be enforced (like login URL), you can pass an String with a single Path or a Regex to match.

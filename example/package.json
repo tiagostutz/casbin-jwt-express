@@ -1,0 +1,24 @@
+{
+  "name": "casbin-jwt-express-example",
+  "version": "1.0.0",
+  "description": "An briefly example of how to use casbin-jwt-express middleware",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "casbin",
+    "jwt",
+    "express",
+    "middleware",
+    "acl",
+    "example"
+  ],
+  "author": "Tiago Stutz",
+  "license": "MIT",
+  "dependencies": {
+    "casbin-jwt-express": "^1.0.2",
+    "express": "^4.16.4",
+    "jsonwebtoken": "^8.4.0"
+  }
+}

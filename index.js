@@ -56,10 +56,16 @@ module.exports = function(modelSource, jwtSecret, ignoredPathsRegex) {
     }
     
     let token = null
-    if (req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer') {
+    if (!req.headers.authorization) {
+      console.error("No HTTP Authorization Header found. To be handled by the casbin-jwt-express middleware, the request must have a Authorization HTTP Header with the format `Bearer <JWT_TOKEN>`. This request didn't have it.")
+      return res.status(400).send({ auth: false, message: 'Unauthorized access.' });
+    }else if (req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer') {
       token = req.headers.authorization.split(' ')[1];
     } else if (req.query && req.query.token) {
       token = req.query.token;
+    }else{      
+      console.error("No JWT Token Found. To be handled by the casbin-jwt-express middleware, the request must have a Authorization HTTP Header with the format `Bearer <JWT_TOKEN>` or have a TOKEN provided as a query param in the URL. This request didn't have either of it.")
+      return res.status(400).send({ auth: false, message: 'Unauthorized access.' });
     }
   
     let model = null

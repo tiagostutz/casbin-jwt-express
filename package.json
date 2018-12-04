@@ -1,6 +1,6 @@
 {
   "name": "casbin-jwt-express",
-  "version": "1.0.0",
+  "version": "1.0.3",
   "description": "An Express authorization middleware that handles stateless JWT Tokens and uses Casbin (https://casbin.org/) to valid access controle rules",
   "main": "index.js",
   "scripts": {
