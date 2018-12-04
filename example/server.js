@@ -1,5 +1,5 @@
-import express from 'express'
-import casbinJWTExpress from 'casbin-jwt-express'
+const express = require('express') 
+const casbinJWTExpress = require('casbin-jwt-express') 
 
 const jwt = require('jsonwebtoken');
 const jwtSecret = "secret-example-of-casbin-jwt-express"
@@ -19,24 +19,41 @@ const casbinPolicyModel = { fromText:  `
     `
 }
 
-var token = jwt.sign({ 
-    sub: "helena",
-    policy: "p, helena, /brinquedo/*, GET"
-})
-console.log("PUT THIS TOKEN ON AUTHORIZATION HEADER:\n", token)
-
 const app = express();
-app.use(casbinJWTExpress(casbinPolicyModel, jwtSecret, "/"))
 
+app.use(casbinJWTExpress(casbinPolicyModel, jwtSecret, "/opened"))
 
-app.get('/', (req, res, next) => {
-    res.send(`This endpoint is opened. Won't check permission and leave anyone access it.`)
+app.get('/opened', (req, res, next) => {
+    res.send(`Success! This endpoint is opened. Won't check permission and leave anyone access it.`)
     next()
 });  
 app.get('/brinquedo/*', (req, res, next) => {
-    res.send(`If you see this message you provided an valid token and have access`)
+    res.send(`Success! If you see this message you provided an valid token and have access`)
     next()
 });  
 
-app.listen(7000);
+const port = 7007
+app.listen(port);
 console.log(`Server started on ${port}`)
+
+
+var token = jwt.sign({ 
+    sub: "helena",
+    policy: "p, helena, /brinquedo/break, GET"
+}, jwtSecret)
+
+console.log("PUT THIS TOKEN ON AUTHORIZATION HEADER:\n\n", token, "\n\n")
+console.log("Requests examples.")
+
+console.log('ALLOWED :');
+console.log('\n');
+console.log(`curl -X GET http://localhost:7007/opened`);
+console.log('\n');
+console.log(`curl -X GET http://localhost:7007/brinquedo/break  -H 'Authorization: Bearer ${token}'`);
+console.log('\n');
+console.log('DENIED:');
+console.log('\n');
+console.log(`curl -X GET http://localhost:7007/brinquedo/buy  -H 'Authorization: Bearer ${token}'`);
+console.log('\n');
+
+
