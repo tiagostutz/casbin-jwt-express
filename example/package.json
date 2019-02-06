@@ -18,7 +18,7 @@
   "author": "Tiago Stutz",
   "license": "MIT",
   "dependencies": {
-    "casbin-jwt-express": "^1.0.2",
+    "casbin-jwt-express": "^2.0.0",
     "express": "^4.16.4",
     "jsonwebtoken": "^8.4.0"
   }

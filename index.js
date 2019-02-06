@@ -1,4 +1,4 @@
-const { Helper } = require('casbin');
+const { Helper, newEnforcer, newModel } = require('casbin');
 const { Enforcer } = require('casbin')
 const jwt = require('jsonwebtoken');
 
@@ -70,10 +70,10 @@ module.exports = function(modelSource, jwtSecret, ignoredPathsRegex) {
   
     let model = null
     if (typeof(modelSource) === "string") { //model from file
-      model = Enforcer.newModel(modelSource, '');
+      model = newModel(modelSource, '');
       
     }else{ //object model
-      model = Enforcer.newModel(modelSource.fromText)      
+      model = newModel(modelSource.fromText)      
       
     }
     
@@ -83,7 +83,7 @@ module.exports = function(modelSource, jwtSecret, ignoredPathsRegex) {
         return res.status(401).send({ auth: false, message: 'Unauthorized access.' });
       } 
       
-      const enforcer = await Enforcer.newEnforcer(model, new CasbinJWTAdapter(decoded))
+      const enforcer = await newEnforcer(model, new CasbinJWTAdapter(decoded))
       const { originalUrl: path, method } = req
       const username = token ? decoded.sub  : 'anonymous'
       
