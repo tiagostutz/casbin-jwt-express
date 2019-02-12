@@ -2,6 +2,7 @@
 
 `casbin-jwt-express` is an authorization middleware that uses stateless JWT token to validate ACL rules using [Casbin](https://github.com/casbin/node-casbin)
 
+To see it in action, clone this repo, go to **example** folder and run `npm install && npm start` (https://github.com/tiagostutz/casbin-jwt-express/tree/master/example)
 
 It uses loaded policy rules applied to the enforced user directly from the JWT, so the authorization rules used in the enforcement process are not validated from a server or a file, but from the JWT token itself.
 
