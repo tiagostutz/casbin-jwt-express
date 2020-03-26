@@ -43,7 +43,7 @@ module.exports = function(modelSource, jwtSecret, ignoredPathsRegex) {
   return async (req, res, next) => {
   
     if (ignoredPathsRegex) {
-      if (typeof(ignoredPathsRegex === "string")) {
+      if (typeof(ignoredPathsRegex) === "string") {
         if (req.originalUrl.match(new RegExp(ignoredPathsRegex, "g"))) {
           return next()
         }
